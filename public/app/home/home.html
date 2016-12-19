@@ -1,6 +1,37 @@
 <div ng-show='isLoggedIn()'>
     <!-- Video Library -->
-
+<!-- <<<<<<< 134c90a8022a80352e27835c1ca713d3b81ee526
+======= -->
+   <!--  <div class='video-library col-sm-4'>
+      <h2>Video Library</h2>
+      
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              <button ng-click="sortBy('title')">Name</button>
+              <span ng-class="reverse ? 'glyphicon glyphicon-triangle-bottom' : 'glyphicon glyphicon-triangle-top'" ng-show="sortPropertyName === 'title'"></span>
+            </th>
+            <th>
+              <button ng-click="sortBy('lastCommentDate')">Last Modified</button>
+              <span ng-class="reverse ? 'glyphicon glyphicon-triangle-bottom' : 'glyphicon glyphicon-triangle-top'" ng-show="sortPropertyName === 'lastCommentDate'"></span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- When an item in the video library is clicked, setCurrentVideo is called with only the second argument
+          <tr ng-click="setCurrentVideo(null, libVideo)" ng-repeat='libVideo in userVideos
+            | orderBy:sortPropertyName:reverse' >
+            <td><img ng-src="{{libVideo.image}}"></td>
+            <td>{{libVideo.title}}</td>
+            <td>{{libVideo.lastCommentDate || libVideo.createdAt | amCalendar:referenceTime:formats}}</td>
+            <td><button ng-click="deleteVideo(libVideo); $event.stopPropagation()" class="btn btn-default btn-sm glyphicon glyphicon-trash" style="border: none; padding-bottom:23px; background-color: transparent; font-size: 20px; color: #AAADAD;"></button></td>
+          </tr>
+        </tbody>
+      </table> --> -->
+<!-- >>>>>>> Allow user to retrieve annotation when a video is loaded from the library
+ -->
     <div class='page-title col-sm-12'>
       <h1 class="username" style="display: inline; color: #545454;"> {{username}}</h1><h1 class="library" style="display: inline;">Video Library </h1>
     </div>

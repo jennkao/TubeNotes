@@ -11,7 +11,6 @@ angular.module('tubenotes', [
 ])
 
 .factory('AppFactory', function($http) {
-  
   // This factory function will do a post request to our server to store a note in our database
   var addNote = function(commentText, timestamp) {
     note = {
@@ -54,7 +53,7 @@ angular.module('tubenotes', [
   
   // find the video
   var deleteVideo = function(video) {
-    $http({
+    return $http({
       method: 'DELETE',
       url: '/deletevideo',
       data: {

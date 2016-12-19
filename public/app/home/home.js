@@ -49,6 +49,6 @@ angular.module('tubenotes.home', ['angularMoment'])
   $scope.deleteVideo = function(video) {
     AppFactory.deleteVideo(video);
     // $route.reload();
-  }
+  };
 
 });

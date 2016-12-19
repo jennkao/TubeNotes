@@ -87,14 +87,14 @@ angular.module('tubenotes.watch', [])
       }
     });
     $scope.currentVideo = AppFactory.currentVideo;
+
     $('#c').css('z-index', '-10');
+    var storage = [];
     if (AppFactory.currentVideo.annotation) {
       initializeAnnotation();
     }
   };
 
-  // $scope.activeInterval = true;
-  // $scope.pausedTime = null;
   $scope.isPaused = false;
   $scope.record = false;
   $scope.playback = false;

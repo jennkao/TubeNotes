@@ -96,6 +96,7 @@ module.exports = {
   },
 
   postGroupComments: function(req, res) {
+    console.log(req.body)
     db.User.findOne({where: {username: req.body.username}})
     .then(function(user) {
       console.log(user);
@@ -104,7 +105,7 @@ module.exports = {
         timestamp: req.body.startTime,
         UserId: user.get('id'),
         VideoId: req.body.video.videoTableId,
-        group: true
+        group: req.body.groupId
       })
       .then(function(comment) {
         db.GroupComment.create({

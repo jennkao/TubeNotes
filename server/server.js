@@ -155,6 +155,10 @@ app.post('/uploadAnnotation', function(req, res) {
   })
     res.send();
   });
+<<<<<<< 134c90a8022a80352e27835c1ca713d3b81ee526
+=======
+});
+>>>>>>> Allow user to retrieve annotation when a video is loaded from the library
 
 // send delete request to DB to delete a comment by timestamp
 app.delete('/deletecomment', function(req, res) {
@@ -169,10 +173,15 @@ app.delete('/deletecomment', function(req, res) {
 app.delete('/deletevideo', function(req, res) {
   db.Video.destroy({
     where: {
-      id: req.body.video.comments[0].VideoId
+      id: req.body.video.id
     }
+<<<<<<< 134c90a8022a80352e27835c1ca713d3b81ee526
   })
 })
+=======
+  });
+});
+>>>>>>> Allow user to retrieve annotation when a video is loaded from the library
 
 app.post('/annotations', function(req, res) {
   db.Video.findOne({
@@ -182,7 +191,6 @@ app.post('/annotations', function(req, res) {
   })
   .then(function(video) {
     request.get(video.get('annotation'), function(err, response) {
-      console.log(response.body);
       res.status(200).send(response.body);
     });
   });
@@ -203,7 +211,6 @@ app.get('/groupComments', groupControllers.getGroupComments);
 app.get('/searchGroups', groupControllers.searchGroups);
 app.post('/transferGroupComments', groupControllers.transferGroupComments);
 app.delete('/groupComments', groupControllers.deleteGroupComment);
-
 app.get('/searchGroups', groupControllers.searchGroups);
 
 app.use(express.static(path.join(__dirname, '../public')));
