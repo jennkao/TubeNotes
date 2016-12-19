@@ -1,3 +1,4 @@
+var http = require('http');
 var express = require('express');
 var morgan = require('morgan');
 var app = express();
@@ -6,6 +7,7 @@ var userControllers = require('./users/userControllers.js');
 var groupControllers = require('./groups/groupControllers.js');
 // var cloudinary = require('cloudinary');
 var fs = require('fs');
+var request = require('request');
 
 // cloudinary.config({
 //   cloud_name: 'dhdysf6qc',
@@ -106,6 +108,7 @@ app.post('/uploadAnnotation', function(req, res) {
           console.log('error');
           throw err;
         }
+<<<<<<< fca3cd9a3362e61797b0521f519987bc5b730e2c
         console.log('pathname: ', path.join(__dirname, '/test.js'));
         // cloudinary.v2.uploader.upload(path.join(__dirname, '/test.js'),
         //   { resource_type: "raw" },
@@ -115,6 +118,38 @@ app.post('/uploadAnnotation', function(req, res) {
         //     }
         //     console.log('result: ', result);
         //   });
+=======
+        db.User.findOrCreate({
+          where: {
+            username: req.body.user
+          }
+        })
+        .then(function(user) {
+          db.Video.findOrCreate({ where: {
+            url: 'youtube.com/embed/' + req.body.video.id,
+            UserId: user[0].get('id'),
+            title: req.body.video.title,
+            image: req.body.video.image      
+          }})
+          .then(function(video) {
+            cloudinary.v2.uploader.upload(path.join(__dirname, '/test.js'),
+            { resource_type: 'raw' },
+            function(error, result) {
+              if (error) {
+                console.log(error);
+              }
+              console.log(result);
+              db.Video.update(
+              { annotation: result.url},
+              { where: {id: video[0].get('id')}}
+              )
+              .then(function(data) {
+                res.status(201).send(JSON.stringify(data));
+              });
+            });
+          });
+        });
+>>>>>>> allow users to save annotations
       });
     }
   })
@@ -138,6 +173,20 @@ app.delete('/deletevideo', function(req, res) {
     }
   })
 })
+
+app.post('/annotations', function(req, res) {
+  db.Video.findOne({
+    where: {
+      id: req.body.video.videoTableId
+    }
+  })
+  .then(function(video) {
+    request.get(video.get('annotation'), function(err, response) {
+      console.log(response.body);
+      res.status(200).send(response.body);
+    });
+  });
+});
 
 // Look into the userControllers folder for the signup and login method
 app.post('/users/signup', userControllers.signup);

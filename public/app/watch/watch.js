@@ -67,6 +67,13 @@ angular.module('tubenotes.watch', [])
     }
   };
 
+  var initializeAnnotation = function() {
+    AppFactory.getAnnotation(AppFactory.currentVideo)
+    .then(function(data) {
+      console.log(data);
+      storage = data;
+    });
+  };
 
 
   window.onYouTubeIframeAPIReady = function() {
@@ -80,8 +87,10 @@ angular.module('tubenotes.watch', [])
       }
     });
     $scope.currentVideo = AppFactory.currentVideo;
-    console.log('test');
     $('#c').css('z-index', '-10');
+    if (AppFactory.currentVideo.annotation) {
+      initializeAnnotation();
+    }
   };
 
   // $scope.activeInterval = true;
@@ -146,8 +155,6 @@ angular.module('tubenotes.watch', [])
       $scope.isPaused = true;
       console.log('storage', storage);
     }
-
-
 
     // when video is playing, show the video's time
     // on user's note taking window
@@ -239,14 +246,15 @@ angular.module('tubenotes.watch', [])
 
 
 
-
    var _ = function(id){return document.getElementById(id)};
+
 
    var canvas = this.__canvas = new fabric.Canvas('c', {
      isDrawingMode: true
    });
 
-   var storage = [];
+   //moved storage variable above
+   // var storage = [];
    var interval = 500;
   // Canvas overlay function, invoked at the end to render
   (function() {

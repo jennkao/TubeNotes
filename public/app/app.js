@@ -39,6 +39,18 @@ angular.module('tubenotes', [
       }
     });
   };
+
+  var getAnnotation = function(video) {
+    return $http({
+      method: 'POST',
+      url: '/annotations',
+      data: JSON.stringify({video: video})
+    })
+    .then(function(response) {
+      return response.data;
+    });
+  };
+
   
   // find the video
   var deleteVideo = function(video) {
@@ -51,7 +63,7 @@ angular.module('tubenotes', [
       headers: {
         'Content-type': 'application/json;charset=utf-8'
       }
-    })
+    });
   };
 
   // This will be accessed in all of our controllers as AppFactory
@@ -99,7 +111,8 @@ angular.module('tubenotes', [
         id: libVideo.url.slice(18),
         comments: libVideo.comments,
         image: libVideo.image,
-        videoTableId: libVideo.id
+        videoTableId: libVideo.id,
+        annotation: libVideo.annotation
       };
     }
     //if we are in group mode, pass along the groupname as search query
