@@ -5,20 +5,19 @@ var app = express();
 var jwt = require('jwt-simple');
 var userControllers = require('./users/userControllers.js');
 var groupControllers = require('./groups/groupControllers.js');
-// var cloudinary = require('cloudinary');
+var cloudinary = require('cloudinary');
 var fs = require('fs');
 var request = require('request');
 
-// cloudinary.config({
-//   cloud_name: 'dhdysf6qc',
-//   api_key: '299727653385491',
-//   api_secret: 'vshmxkEjzRiylUjrXi20qk67hKA'
-// });
+cloudinary.config({
+  cloud_name: 'dhdysf6qc',
+  api_key: '299727653385491',
+  api_secret: 'vshmxkEjzRiylUjrXi20qk67hKA'
+});
 
 var path = require('path');
 var bodyParser = require('body-parser');
 
-// Import the three collections from schemas
 var db = require('./schemas');
 var Sequelize = require('sequelize');
 
@@ -45,12 +44,14 @@ app.get('/videos', function (req, res) {
         }}).then(function (comments) {
           // Create a new video object that will be pushed into the results array
           var videoObject = {
+            id: videos[i].id,
             url: videos[i].url,
             title: videos[i].title,
             comments: comments,
             image: videos[i].image,
             createdAt: videos[i].createdAt,
-            lastCommentDate: comments[comments.length - 1].createdAt
+            lastCommentDate: comments.length > 0 ? comments[comments.length - 1].createdAt : null,
+            annotation: videos[i].annotation
           };
           results.push(videoObject);
           // When we get to the end of the videos array, send the results array back to the client
@@ -66,59 +67,45 @@ app.get('/videos', function (req, res) {
 
 // This is the post request for when a user submits a note on a video
 app.post('/comment-video', function (req, res) {
-  console.log('post');
   // Find a user in the database based on the passed in username
   db.User.findOrCreate({
     where: {
       username: req.body.username
     }
   })
-    .then(function(user) {
-      // Create a new video to post to the database linked to that user
-      db.Video.findOrCreate({where: {
-        url: req.body.videoUrl,
+  .then(function(user) {
+    // Create a new video to post to the database linked to that user
+    db.Video.findOrCreate({where: {
+      url: req.body.videoUrl,
+      UserId: user[0].get('id'),
+      title: req.body.videoTitle,
+      image: req.body.image
+    }})
+    .then(function (video) {
+      // Create a new note to post to the database linked to that user and video
+      // video[0].updateAttributes();
+      db.Comment.create({
+        text: req.body.commentText,
+        timestamp: req.body.timestamp,
         UserId: user[0].get('id'),
-        title: req.body.videoTitle,
-        image: req.body.image
-      }})
-      .then(function (video) {
-        // Create a new note to post to the database linked to that user and video
-        // video[0].updateAttributes();
-        db.Comment.create({
-          text: req.body.commentText,
-          timestamp: req.body.timestamp,
-          UserId: user[0].get('id'),
-          VideoId: video[0].get('id')
-        });
+        VideoId: video[0].get('id')
       });
     });
+  });
   res.status(201).send('sent');
 });
 
+
 // uploads annotations
 app.post('/uploadAnnotation', function(req, res) {
-  console.log('hits server uploadAnnotation post');
-  console.log('req.body: ', req.body);
   fs.open('test.js', 'w', function(err, fd) {
     if (err) {
       throw err;
     } else {
-      fs.writeFile(path.join(__dirname, '/test.js'), JSON.stringify(req.body), function(err, data) {
+      fs.writeFile(path.join(__dirname, '/test.js'), JSON.stringify(req.body.storage), function(err, data) {
         if (err) {
-          console.log('error');
-          throw err;
+          console.log(err);
         }
-<<<<<<< fca3cd9a3362e61797b0521f519987bc5b730e2c
-        console.log('pathname: ', path.join(__dirname, '/test.js'));
-        // cloudinary.v2.uploader.upload(path.join(__dirname, '/test.js'),
-        //   { resource_type: "raw" },
-        //   function(error, result) {
-        //     if (error) {
-        //       throw error;
-        //     }
-        //     console.log('result: ', result);
-        //   });
-=======
         db.User.findOrCreate({
           where: {
             username: req.body.user
@@ -149,16 +136,10 @@ app.post('/uploadAnnotation', function(req, res) {
             });
           });
         });
->>>>>>> allow users to save annotations
       });
     }
-  })
-    res.send();
   });
-<<<<<<< 134c90a8022a80352e27835c1ca713d3b81ee526
-=======
 });
->>>>>>> Allow user to retrieve annotation when a video is loaded from the library
 
 // send delete request to DB to delete a comment by timestamp
 app.delete('/deletecomment', function(req, res) {
@@ -166,7 +147,7 @@ app.delete('/deletecomment', function(req, res) {
     where: {
       timestamp: req.body.comment.timestamp
     }
-  })
+  });
 });
 
 // send delete request to DB to delete a video by video id
@@ -175,13 +156,8 @@ app.delete('/deletevideo', function(req, res) {
     where: {
       id: req.body.video.id
     }
-<<<<<<< 134c90a8022a80352e27835c1ca713d3b81ee526
-  })
-})
-=======
   });
 });
->>>>>>> Allow user to retrieve annotation when a video is loaded from the library
 
 app.post('/annotations', function(req, res) {
   db.Video.findOne({

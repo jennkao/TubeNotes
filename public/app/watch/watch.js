@@ -243,11 +243,7 @@ angular.module('tubenotes.watch', [])
 
 
 
-
-
-
    var _ = function(id){return document.getElementById(id)};
-
 
    var canvas = this.__canvas = new fabric.Canvas('c', {
      isDrawingMode: true

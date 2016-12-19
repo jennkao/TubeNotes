@@ -96,7 +96,7 @@ module.exports = {
   },
 
   postGroupComments: function(req, res) {
-    console.log(req.body)
+    console.log(req.body);
     db.User.findOne({where: {username: req.body.username}})
     .then(function(user) {
       console.log(user);
