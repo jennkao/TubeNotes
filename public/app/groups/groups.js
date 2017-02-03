@@ -4,6 +4,10 @@ angular.module('tubenotes.groups', [])
   $scope.isLoggedIn = function() {
     return AppFactory.username !== '';
   };
+
+  $scope.groupListMode = function() {
+    return $scope.groups.length > 0;
+  }
   $scope.groupnameCreate = '';
   $scope.groupnameSearch = '';
   $scope.groups = [];
@@ -38,6 +42,14 @@ angular.module('tubenotes.groups', [])
     .then(function(data) {
       $scope.groups = data;
     });
+  };
+
+
+  $scope.sortPropertyName = 'createdAt';
+  $scope.reverse = true;
+  $scope.sortBy = function(sortPropertyName) {
+    $scope.reverse = ($scope.sortPropertyName === sortPropertyName) ? !$scope.reverse : false;
+    $scope.sortPropertyName = sortPropertyName;
   };
 
 });

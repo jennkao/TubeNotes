@@ -33,7 +33,7 @@
 <!-- >>>>>>> Allow user to retrieve annotation when a video is loaded from the library
  -->
     <div class='page-title col-sm-12'>
-      <h1 class="username" style="display: inline; color: #545454;"> {{username}}</h1><h1 class="library" style="display: inline;">Video Library </h1>
+      <h1 class="username" style="display: inline; color: #545454;"> {{username}}'s</h1><h1 class="library" style="display: inline;">Video Library </h1>
     </div>
     <div>
       <div class="col-sm-8 pull-left video-library">
@@ -53,7 +53,7 @@
           <tbody>
             <!-- When an item in the video library is clicked, setCurrentVideo is called with only the second argument -->
             <tr ng-click="setCurrentVideo(null, libVideo)" ng-repeat='libVideo in userVideos
-              | orderBy:sortPropertyName:reverse' >
+              | orderBy:sortPropertyName:reverse' class="libVideo">
               <td><img ng-src="{{libVideo.image}}"></td>
               <td>{{libVideo.title}}</td>
               <td>{{libVideo.lastCommentDate | amCalendar:referenceTime:formats}}</td>

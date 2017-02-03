@@ -279,10 +279,6 @@ body {
   cursor: pointer;
 }
 
-.userGroup:hover {
-  cursor: pointer;
-}
-
 .video-library > th {
   border-bottom-color: 545454;
 }
@@ -298,6 +294,10 @@ body {
   padding: 10px;
   border-bottom: 2px solid #545454;
   border-top: 2px solid #545454;
+}
+
+.libVideo {
+  cursor: pointer;
 }
 
 
@@ -429,6 +429,42 @@ ul > li > button {
 
 #groupPost > button:hover {
   opacity: 75%;
+}
+
+/* * * * * * * *
+ *   Group     *
+ *   Home      *
+ *             *
+ * * * * * * * */
+
+.group-header {
+  padding: 10px 20px;
+}
+
+.groupForm {
+  display: inline-block;
+  padding: 10px 20px;
+}
+
+.groupForm-content {
+  display: flex;
+  justify-content: space-between;
+  width: 1000.13px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.group-list {
+  padding: 0 40px;
+  list-style-type: none;
+}
+
+.group-list-item {
+  cursor: pointer;
+}
+
+.join-group-btn {
+  margin-left: 20px;
 }
 
 /* * * * * * * *
@@ -576,7 +612,6 @@ ul > li > button {
 .sortorder:after {
   content: '\25b2';
 }
-
 
 .navigation-items a:hover {
   background-color : #222;

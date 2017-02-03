@@ -1,21 +1,42 @@
 <div ng-show='isLoggedIn()'>
-  <h1>Welcome to the groups page</h1>
-  <form name="userNote">
-    <input type="text" name="groupnameCreate" placeholder="Create a group" ng-model="groupnameCreate"/>
-    <button class='btn' ng-click="createGroup(groupnameCreate)">Create Group</button>
-    
-    <input type="text" name="groupnameSearch" placeholder="Enter your group..." ng-model="groupnameSearch"/>
+  <h1 class="group-header">Browse groups</h1>
+  <form class="groupForm">
+    <div class='groupForm-content'>
+    <div class="search-group-input">
+    <input type="text" name="groupnameSearch" placeholder="Enter an existing group..." ng-model="groupnameSearch"/>
     <button class='btn' ng-click="searchGroups(groupnameSearch)">Search</button>
-    <p ng-show="groups === null">'We didn't find that group! Care to create it?'</p>
-
     <button class='btn' ng-click="initializeGroups()">View All</button>
+    <p ng-show="groups === null">'We didn't find that group! Care to create it?'</p>
+    </div>
+
+    <div class="create-group-input">
+      <input type="text" name="groupnameCreate" placeholder="Create a group" ng-model="groupnameCreate"/>
+      <button class='btn' ng-click="createGroup(groupnameCreate)">Create</button>
+    </div>
+    </div>
   </form>
 
-  <ul ng-repeat="group in groups">
-    <li ng-click="setCurrentGroup(group)">
-      <h4>{{group.groupname}}</h4>
-    </li>
-  </ul>
-
-
+  <div class="col-sm-8 pull-left video-library" ng-show='groupListMode()'>
+    <table class="table-hover table-box">
+      <thead>
+        <tr>
+          <th>
+            <button class="home-button" ng-click="sortBy('title')">Name</button>
+            <span ng-class="reverse ? 'glyphicon glyphicon-triangle-bottom' : 'glyphicon glyphicon-triangle-top'" ng-show="sortPropertyName === 'title'"></span>
+          </th>
+          <th>
+            <button class="home-button" ng-click="sortBy('createdAt')">Date Created</button><span ng-class="reverse ? 'glyphicon glyphicon-triangle-bottom' : 'glyphicon glyphicon-triangle-top'" ng-show="sortPropertyName === 'createdAt'"></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- When an item in the video library is clicked, setCurrentVideo is called with only the second argument -->
+        <tr ng-click="setCurrentGroup(group)" ng-repeat='group in groups
+          | orderBy:sortPropertyName:reverse' class="libVideo">
+          <td><h4>{{group.groupname}}</h4></td>
+          <td>{{group.createdAt | amCalendar:referenceTime:formats}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
