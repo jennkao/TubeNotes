@@ -27,6 +27,9 @@
           <th>
             <button class="home-button" ng-click="sortBy('createdAt')">Date Created</button><span ng-class="reverse ? 'glyphicon glyphicon-triangle-bottom' : 'glyphicon glyphicon-triangle-top'" ng-show="sortPropertyName === 'createdAt'"></span>
           </th>
+          <th>
+            <button class="home-button" ng-click="sortBy('lastCommentDate')">Date of Last Comment</button><span ng-class="reverse ? 'glyphicon glyphicon-triangle-bottom' : 'glyphicon glyphicon-triangle-top'" ng-show="sortPropertyName === 'lastCommentDate'"></span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -35,6 +38,7 @@
           | orderBy:sortPropertyName:reverse' class="libVideo">
           <td><h4>{{group.groupname}}</h4></td>
           <td>{{group.createdAt | amCalendar:referenceTime:formats}}</td>
+          <td>{{group.lastCommentDate | amCalendar:referenceTime:formats}}</td>
         </tr>
       </tbody>
     </table>

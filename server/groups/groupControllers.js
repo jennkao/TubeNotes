@@ -4,15 +4,35 @@ var Sequelize = require('sequelize');
 module.exports = {
   postGroup: function(req, res) {
     var groupname = req.body.groupname;
-    db.Group.findOrCreate({where: {groupname: groupname}})
+    db.Group.findOrCreate({where: {groupname: groupname}}) 
     .then(function(group) {
       res.status(201).send(JSON.stringify(group));
     });
   },
 
   getGroups: function(req, res) {
-    db.Group.findAll().then(function(groups) {
-      res.status(200).send(JSON.stringify(groups));
+    var results = [];
+    db.Group.findAll()
+    .then(function(groups) {
+      for (let i = 0; i < groups.length; i++) {
+        db.GroupComment.findAll({
+          where: {
+            groupId: groups[i].get('id')
+          }
+        })
+        .then(comments => {
+          var groupObj = {
+            id: groups[i].get('id'),
+            groupname: groups[i].get('groupname'),
+            createdAt: groups[i].get('createdAt'),
+            lastCommentDate: comments.length > 0 ? comments[comments.length - 1].createdAt : null
+          }
+          results.push(groupObj)
+          if (results.length === groups.length) {
+            res.status(200).send(JSON.stringify(results));
+          }
+        })
+      }
     });
   },
 
